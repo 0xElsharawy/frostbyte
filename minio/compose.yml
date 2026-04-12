@@ -1,0 +1,21 @@
+services:
+  minio:
+    image: quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z-cpuv1
+    container_name: minio
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - frostbyte-net
+    ports:
+      - "9000:9000" # API
+      - "9001:9001" # Console
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
