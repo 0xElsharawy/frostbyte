@@ -1,0 +1,13 @@
+include:
+  - path: ./airflow/compose.yml
+  - path: ./metabase/compose.yml
+  - path: ./minio/compose.yml
+  - path: ./postgres/compose.yml
+
+volumes:
+  postgres-data:
+  minio-data:
+
+networks:
+  frostbyte-net:
+    driver: bridge
