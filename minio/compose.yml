@@ -4,7 +4,7 @@ services:
     container_name: minio
     env_file:
       - .env
-    restart: unless-stopped
+    restart: no
     networks:
       - frostbyte-net
     ports:
