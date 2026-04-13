@@ -1,10 +1,12 @@
 services:
   dbt:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: dbt-trino
     restart: no
     networks:
-      - frostbyte
+      - frostbyte-net
     volumes:
       - ./profiles:/root/.dbt
     command: ["--help"]
