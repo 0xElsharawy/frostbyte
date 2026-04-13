@@ -7,5 +7,5 @@ This project is inspired by this [post](https://vutr.substack.com/p/build-a-lake
 ---
 
 <p align="center">
-    <strong>If you liked this project, Give it a ⭐.**</strong>
+    <strong>If you liked this project, give it a ⭐.</strong>
 </p>
