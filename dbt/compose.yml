@@ -1,0 +1,10 @@
+services:
+  dbt:
+    build: .
+    image: dbt-trino
+    restart: no
+    networks:
+      - frostbyte
+    volumes:
+      - ./profiles:/root/.dbt
+    command: ["--help"]

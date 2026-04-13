@@ -1,0 +1,13 @@
+.gitignore
+.git/
+
+.env
+
+README.md
+
+Dockerfile
+compose.yml
+
+.venv/
+logs/
+profiles/
