@@ -4,6 +4,7 @@ include:
   - path: ./minio/compose.yml
   - path: ./nessie/compose.yml
   - path: ./postgres/compose.yml
+  - path: ./trino/compose.yml
 
 volumes:
   postgres-data:
