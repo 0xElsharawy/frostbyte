@@ -1,0 +1,39 @@
+services:
+  airflow:
+    build: .
+    container_name: airflow
+    env_file:
+      - .env
+    restart: no
+    networks:
+      - frostbyte-net
+    user: "${AIRFLOW_UID:-1000}:0"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      AIRFLOW__CORE__EXECUTOR: "LocalExecutor"
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: "postgresql+psycopg2://airflow:airflow@postgres/airflow"
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW_CORE_ENABLE_XCOM_PICKLING: "true"
+      _AIRFLOW_DB_MIGRATE: "true"
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./dataset:/opt/airflow/dataset
+    ports:
+      - "8080:8080"
+    command: standalone
+
+  docker-socket-proxy:
+    image: tecnativa/docker-socket-proxy:v0.4.2
+    container_name: docker-socket-proxy
+    restart: no
+    networks:
+      - frostbyte-net
+    environment:
+      CONTAINERS: "1"
+      IMAGES: "1"
+      AUTH: "1"
+      POST: "1"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
