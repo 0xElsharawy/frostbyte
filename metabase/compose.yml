@@ -2,8 +2,6 @@ metabase:
   build: .
   container_name: metabase
   restart: no
-  env_file:
-    - .env
   networks:
     - frostbyte-net
   depends_on:
@@ -11,6 +9,14 @@ metabase:
       condition: service_healthy
   ports:
     - "3000:3000"
+  environments:
+    MB_DB_TYPE: "postgres"
+    MB_DB_DBNAME: "metabase"
+    MB_DB_PORT: "5432"
+    MB_DB_USER: "metabase"
+    MB_DB_PASS: "metabase"
+    MB_DB_HOST: "postgres"
+
   healthcheck:
     test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
     interval: 15s
