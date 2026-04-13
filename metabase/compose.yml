@@ -9,7 +9,7 @@ metabase:
       condition: service_healthy
   ports:
     - "3000:3000"
-  environments:
+  environment:
     MB_DB_TYPE: "postgres"
     MB_DB_DBNAME: "metabase"
     MB_DB_PORT: "5432"
