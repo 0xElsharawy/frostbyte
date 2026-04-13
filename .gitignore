@@ -6,4 +6,9 @@
 !.env.example
 !**/.env.example
 
-dataset-vol/
+airflow/dataset/
+airflow/dags/__pycache__
+
+terraform/.terraform
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
