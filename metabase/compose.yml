@@ -1,25 +1,26 @@
-metabase:
-  build: .
-  container_name: metabase
-  restart: no
-  networks:
-    - frostbyte-net
-  depends_on:
-    postgres:
-      condition: service_healthy
-  ports:
-    - "3000:3000"
-  environment:
-    MB_DB_TYPE: "postgres"
-    MB_DB_DBNAME: "metabase"
-    MB_DB_PORT: "5432"
-    MB_DB_USER: "metabase"
-    MB_DB_PASS: "metabase"
-    MB_DB_HOST: "postgres"
+services:
+  metabase:
+    build: .
+    container_name: metabase
+    restart: no
+    networks:
+      - frostbyte-net
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    environment:
+      MB_DB_TYPE: "postgres"
+      MB_DB_DBNAME: "metabase"
+      MB_DB_PORT: "5432"
+      MB_DB_USER: "metabase"
+      MB_DB_PASS: "metabase"
+      MB_DB_HOST: "postgres"
 
-  healthcheck:
-    test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
-    interval: 15s
-    timeout: 5s
-    retries: 5
-    start_period: 30s
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
