@@ -1,4 +1,4 @@
-![FrostByte](assets/frostbyte.png)
+![FrostByte](assets/frostbyte.jpg)
 
 ## Acknowledgements
 
