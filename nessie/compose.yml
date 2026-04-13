@@ -1,0 +1,9 @@
+services:
+  nessie-catalog:
+    image: ghcr.io/projectnessie/nessie:0.76.0
+    container_name: nessie-catalog
+    restart: no
+    networks:
+      - frostbyte-net
+    ports:
+      - "19120:19120"
