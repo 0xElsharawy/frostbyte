@@ -1,0 +1,9 @@
+[runtime]
+log_level="WARNING"
+dlthub_telemetry = true
+
+[sources.filesystem]
+bucket_url = "/opt/airflow/dataset"
+
+[pipeline]
+loader_file_format="parquet"
