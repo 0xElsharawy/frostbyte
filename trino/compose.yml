@@ -1,0 +1,25 @@
+services:
+  trino-coordinator:
+    image: trinodb/trino:477
+    container_name: trino-coordinator
+    restart: no
+    networks:
+      - frostbyte-net
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./trino-config/coordinator/config.properties:/etc/trino/config.properties
+      - ./trino-config/catalog:/etc/trino/catalog
+      - ./trino-config/coordinator/init.sql:/etc/trino/init.sql
+
+  trino-worker:
+    image: trinodb/trino:477
+    container_name: trino-worker
+    restart: no
+    networks:
+      - frostbyte-net
+    volumes:
+      - ./trino-config/worker/config.properties:/etc/trino/config.properties
+      - ./trino-config/catalog:/etc/trino/catalog
+    depends_on:
+      - trino-coordinator
