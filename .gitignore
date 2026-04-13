@@ -9,6 +9,8 @@
 airflow/dataset/
 airflow/dags/__pycache__
 
+dbt/logs
+
 terraform/.terraform
 terraform/terraform.tfstate
 terraform/terraform.tfstate.backup
