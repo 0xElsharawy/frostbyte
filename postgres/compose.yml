@@ -3,14 +3,16 @@ services:
     image: postgres:16
     container_name: postgres
     restart: no
-    env_file:
-      - .env
     networks:
       - frostbyte-net
     ports:
       - "5432:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+      POSTGRES_DB: "postgres"
     volumes:
-      - ./init.sh:/docker-entrypoint-initdb.d/init.sh
+      - ./init-db:/docker-entrypoint-initdb.d
       - postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
