@@ -4,6 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
     image: dbt-trino
+    container_name: dbt-trino
     restart: no
     networks:
       - frostbyte-net
