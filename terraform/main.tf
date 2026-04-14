@@ -15,7 +15,7 @@ provider "minio" {
   minio_ssl      = false
 }
 
-resource "minio_s3_bucket" "lakehouse" {
+resource "minio_s3_bucket" "lakehouse_data" {
 
   bucket        = "lakehouse"
   acl           = "private"
