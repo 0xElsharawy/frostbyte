@@ -15,19 +15,8 @@ provider "minio" {
   minio_ssl      = false
 }
 
-locals {
-  buckets = [
-    "raw",
-    "staging",
-    "intermediate",
-    "marts"
-  ]
-}
-
-resource "minio_s3_bucket" "data_lake" {
-  for_each = toset(local.buckets)
-
-  bucket        = each.value
+resource "minio_s3_bucket" "weather_data" {
+  bucket        = "lakehouse"
   acl           = "private"
   force_destroy = true
 }
