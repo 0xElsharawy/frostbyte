@@ -15,7 +15,8 @@ provider "minio" {
   minio_ssl      = false
 }
 
-resource "minio_s3_bucket" "weather_data" {
+resource "minio_s3_bucket" "lakehouse" {
+
   bucket        = "lakehouse"
   acl           = "private"
   force_destroy = true
