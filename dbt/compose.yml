@@ -8,6 +8,8 @@ services:
     restart: no
     networks:
       - frostbyte-net
+    environment:
+      DBT_PROFILES_DIR: /root/.dbt
     volumes:
       - ./profiles:/root/.dbt
     command: ["--help"]
