@@ -3,7 +3,6 @@ include:
   - path: ./dbt/compose.yml
   - path: ./metabase/compose.yml
   - path: ./minio/compose.yml
-  - path: ./nessie/compose.yml
   - path: ./postgres/compose.yml
   - path: ./trino/compose.yml
 
