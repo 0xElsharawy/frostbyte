@@ -1,2 +1,5 @@
 apache-airflow-providers-amazon==9.23.0
 polars==1.39.0
+pyiceberg[sql-postgres]==0.11.0
+pyarrow==23.0.0
+psycopg2-binary==2.9.11
