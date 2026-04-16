@@ -1,0 +1,27 @@
+services:
+  spark-master:
+    image: apache/spark:3.5.0
+    container_name: spark-master
+    ports:
+      - "7077:7077"
+      - "8083:8080"
+    restart: no
+    networks:
+      - frostbyte-net
+    volumes:
+      - ./jobs:/opt/spark/jobs
+    command: "/opt/spark/bin/spark-class org.apache.spark.deploy.master.Master"
+
+  spark-worker:
+    image: apache/spark:3.5.0
+    container_name: spark-worker
+    ports:
+      - "8082:8081"
+    depends_on:
+      - spark-master
+    restart: no
+    networks:
+      - frostbyte-net
+    volumes:
+      - ./jobs:/opt/spark/jobs
+    command: "/opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077"
