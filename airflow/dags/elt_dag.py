@@ -1,9 +1,5 @@
 from pathlib import Path
 import polars as pl
-import pyarrow.parquet as pq
-from pyiceberg.schema import Schema
-from pyiceberg.io.pyarrow import pyarrow_to_schema
-from pyiceberg.catalog import load_catalog
 from airflow import DAG
 from airflow.providers.standard.operators.python import PythonOperator
 from airflow.providers.amazon.aws.hooks.s3 import S3Hook
@@ -36,16 +32,15 @@ def load_to_minio(**context):
 
     hook = S3Hook(aws_conn_id="minio_conn")
 
-    bucket = "lakehouse"
-    prefix = "raw/"
+    bucket = "landing"
 
     if hook.check_for_bucket(bucket_name=bucket):
         print("Successfully connected to MinIO!")
 
     for file in parquet_dir.glob("*.parquet"):
-        object_name = f"{prefix}{file.name}"
+        object_name = file.name
 
-        print(f"Uploading {file} → s3://{bucket}/{object_name}")
+        print(f"Uploading {file} → s3://{bucket}")
 
         hook.load_file(
             filename=str(file),
@@ -53,46 +48,6 @@ def load_to_minio(**context):
             bucket_name=bucket,
             replace=True,
         )
-
-
-def create_iceberg_tables(**context):
-    parquet_dir = Path(context["ti"].xcom_pull(task_ids="csv_to_parquet"))
-
-    catalog_config = {
-        "type": "sql",
-        "uri": "postgresql+psycopg2://postgres:postgres@postgres:5432/iceberg_catalog",
-        "warehouse": "s3://lakehouse",
-        "s3.endpoint": "http://minio:9000",
-        "s3.access-key-id": "minioadmin",
-        "s3.secret-access-key": "minioadmin",
-        "s3.path-style-access": "true",
-        "py-io-impl": "pyiceberg.io.pyarrow.PyArrowFileIO",
-    }
-
-    catalog = load_catalog(
-        "jdbc_catalog",
-        **catalog_config,
-    )
-    bucket = "lakehouse"
-    namespace = "raw"
-
-    for file in parquet_dir.glob("*.parquet"):
-        table_name = file.stem
-        identifier = f"{namespace}.{table_name}"
-
-        table_location = f"s3://{bucket}/{namespace}/{table_name}"
-
-        arrow_schema = pq.read_schema(file)
-        iceberg_schema = pyarrow_to_schema(arrow_schema)
-
-        table = catalog.create_table(
-            identifier, schema=iceberg_schema, location=table_location
-        )
-
-        remote_path = f"s3://{bucket}/raw/{table_name}/{file.name}"
-
-        print(f"Registering {remote_path} into table {identifier}")
-        table.add_files(file_paths=[remote_path])
 
 
 default_args = {
@@ -119,9 +74,4 @@ with DAG(
         python_callable=load_to_minio,
     )
 
-    create_iceberg_tables_task = PythonOperator(
-        task_id="create_iceberg_tables",
-        python_callable=create_iceberg_tables,
-    )
-
-    csv_to_parquet_task >> load_to_minio_task >> create_iceberg_tables_task
+    csv_to_parquet_task >> load_to_minio_task
